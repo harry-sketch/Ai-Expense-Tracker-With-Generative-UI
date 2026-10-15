@@ -4,7 +4,7 @@ export const initDb = (path: string): DatabaseSync => {
   const db = new DatabaseSync(path);
 
   const query = `
-    CREATE TABLE IF NOT EXISTS expense(
+    CREATE TABLE IF NOT EXISTS expenses (
        id INTEGER PRIMARY KEY AUTOINCREMENT,
        title TEXT NOT NULL,
        amount REAL NOT NULL,
