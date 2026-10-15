@@ -16,7 +16,7 @@ const graph = new StateGraph(stateAnnotations)
   })
   .addConditionalEdges("tool_node", shouldCotinuefromToolNode, {
     agent_node: "agent_node",
-    // end: END,
+    end: END,
   });
 
 export const app = graph.compile({

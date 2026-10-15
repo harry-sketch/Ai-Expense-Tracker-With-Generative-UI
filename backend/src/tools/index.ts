@@ -87,9 +87,16 @@ export const toolsWithdb = (db: DatabaseSync) => {
 
         const rows = statment.all(from, to);
 
-        console.log({ rows });
+        const result = rows.map((row) => ({
+          [groupBy]: row.period,
+          totalAmt: row.total,
+        }));
 
-        return JSON.stringify(rows);
+        return JSON.stringify({
+          type: "chart",
+          result,
+          labelKey: groupBy,
+        });
       } catch (error) {
         console.log(
           "Something went wrong while generating expense to database",
