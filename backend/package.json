@@ -1,0 +1,16 @@
+{
+  "name": ".",
+  "module": "main.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@langchain/openai": "^1.6.2",
+    "@types/node": "^26.6.5",
+    "dotenv": "^18.0.8"
+  }
+}
