@@ -6,7 +6,7 @@ export const runWorkflow = async () => {
     const resp = await app.invoke(
       {
         messages: new HumanMessage(
-          "Can you visualise how much i have spent this year group by month ?",
+          "Can you visualise how much i have spent this month group by date ?",
         ),
       },
       {

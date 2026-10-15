@@ -64,10 +64,20 @@ export const toolsWithdb = (db: DatabaseSync) => {
   );
 
   const genChartTool = tool(
-    ({ from, to }) => {
+    ({ from, to, groupBy }) => {
       try {
+        console.log({ from, to, groupBy });
+
+        const groupByMap: Record<string, string> = {
+          month: "strftime('%Y-%m', date)",
+          week: "strftime('%Y-W%W', date)",
+          date: "date",
+        };
+
+        const sqlGroupBy = groupByMap[groupBy] ?? "";
+
         const query = `
-          SELECT strftime('%Y-%m', date) as period, SUM(amount) as total
+          SELECT ${sqlGroupBy} as period, SUM(amount) as total
           FROM expenses WHERE date >= ? AND date <= ?
           GROUP BY period
           ORDER BY period
