@@ -1,3 +1,8 @@
 import "dotenv/config";
+import { initDb } from "./src/db/db.ts";
 
-console.log("Hello via Bun!");
+const main = () => {
+  initDb("./src/db/expenses.db");
+};
+
+main();

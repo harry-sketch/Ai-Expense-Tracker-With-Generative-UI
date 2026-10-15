@@ -1,8 +1,8 @@
-import { tool } from "@langchain/core/tools";
+import { tool } from "langchain";
 import { z } from "zod/v4";
 
 export const genChartTool = tool(() => {}, {
-  name: "",
+  name: "generate_chart",
   description: "",
   schema: z.object(),
 });
