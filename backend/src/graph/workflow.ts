@@ -1,12 +1,12 @@
 import { StateGraph } from "@langchain/langgraph";
+import { toolsNode } from "../tools/index.ts";
 import { shouldContinue, shouldCotinuefromToolNode } from "./edges.ts";
 import { agentNode } from "./nodes/agentNode.ts";
-import { toolNode } from "./nodes/toolNode.ts";
 import { stateAnnotations } from "./state.ts";
 
 new StateGraph(stateAnnotations)
   .addNode("agent_node", agentNode)
-  .addNode("tool_node", toolNode)
+  .addNode("tool_node", toolsNode)
   .addEdge("__start__", "agent_node")
   .addConditionalEdges("agent_node", shouldContinue, {
     tool_node: "tool_node",
