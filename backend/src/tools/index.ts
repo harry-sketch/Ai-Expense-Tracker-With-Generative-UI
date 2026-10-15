@@ -1,8 +1,42 @@
-import { ToolNode } from "@langchain/langgraph/prebuilt";
-import { addExpenseTool } from "./add.expense.tool.ts";
-import { genChartTool } from "./gen.chart.tool.ts";
-import { getExpenseTool } from "./get.expense.tool.ts";
+import type { DatabaseSync } from "node:sqlite";
+import { tool } from "@langchain/core/tools";
+import { z } from "zod/v4";
 
-export const tools = [getExpenseTool, genChartTool, addExpenseTool];
+export const toolsWithdb = (db: DatabaseSync) => {
+  const getExpenseTool = tool(() => {}, {
+    name: "get_expense",
+    description: "query the expense from database",
+    schema: z.object({}),
+  });
 
-export const toolsNode = new ToolNode(tools);
+  const genChartTool = tool(() => {}, {
+    name: "generate_chart",
+    description: "",
+    schema: z.object(),
+  });
+
+  const addExpenseTool = tool(
+    ({ amount, title }) => {
+      try {
+        console.log({ title, amount });
+
+        return JSON.stringify([{ status: "success¡" }]);
+      } catch (error) {
+        console.log(
+          "Something went wrong while adding expense to database",
+          error,
+        );
+      }
+    },
+    {
+      name: "add_expense",
+      description: "add the given expense to database",
+      schema: z.object({
+        title: z.string().describe("The expense title"),
+        amount: z.number().describe("The Amount spent"),
+      }),
+    },
+  );
+
+  return [getExpenseTool, genChartTool, addExpenseTool];
+};

@@ -1,5 +1,5 @@
 import { StateGraph } from "@langchain/langgraph";
-import { toolsNode } from "../tools/index.ts";
+import { toolsNode } from "../utils/toolsNode.ts";
 import { shouldContinue, shouldCotinuefromToolNode } from "./edges.ts";
 import { agentNode } from "./nodes/agentNode.ts";
 import { stateAnnotations } from "./state.ts";

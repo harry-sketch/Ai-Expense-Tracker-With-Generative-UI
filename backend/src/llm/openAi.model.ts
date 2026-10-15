@@ -1,5 +1,4 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { tools } from "../tools/index.ts";
 
 export const model = new ChatOpenAI({
   model: "gpt-6-luna",
@@ -10,4 +9,4 @@ export const model = new ChatOpenAI({
   reasoning: {
     effort: "none",
   },
-}).bindTools(tools);
+});
