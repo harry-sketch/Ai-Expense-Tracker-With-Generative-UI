@@ -4,9 +4,7 @@ import { toolsWithdb } from "../tools/index.ts";
 
 export const createDbAgent = () => {
   const db = initDb("./src/db/expenses.db");
-
   const tools = toolsWithdb(db);
-
   const expenseModel = model.bindTools(tools);
 
   return {

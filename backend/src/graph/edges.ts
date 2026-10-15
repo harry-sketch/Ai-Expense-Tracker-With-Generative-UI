@@ -12,11 +12,11 @@ export const shouldContinue = (state: TStateType) => {
 };
 
 export const shouldCotinuefromToolNode = (state: TStateType) => {
-  const aiMsg = state.messages.at(-1) as AIMessage;
+  // const aiMsg = state.messages.at(-1) as AIMessage;
 
-  if (aiMsg && (aiMsg.tool_calls ?? [])?.length > 0) {
-    return "agent_node";
-  }
+  // if (aiMsg && (aiMsg.tool_calls ?? [])?.length > 0) {
+  //   return "agent_node";
+  // }
 
-  return "end";
+  return "agent_node";
 };

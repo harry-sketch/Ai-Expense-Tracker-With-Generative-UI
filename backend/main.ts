@@ -1,8 +1,8 @@
 import "dotenv/config";
-import { initDb } from "./src/db/db.ts";
+import { runWorkflow } from "./src/graph/nodes/run.workflow.ts";
 
-const main = () => {
-  initDb("./src/db/expenses.db");
+const main = async () => {
+  await runWorkflow();
 };
 
 main();
