@@ -1,11 +1,8 @@
 import "./App.css";
+import { ChatContainer } from "./components/ChatContainer";
 
 function App() {
-  return (
-    <div className="bg-red-400 h-screen w-full">
-      <h1> Hello from Vite</h1>
-    </div>
-  );
+  return <ChatContainer />;
 }
 
 export default App;
