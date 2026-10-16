@@ -1,8 +1,11 @@
 import { ChatInput } from "./ChatInput";
+import ChatMessage from "./ChatMessage";
 import EmptyState from "./EmptyState";
 import Header from "./Header";
 
 export function ChatContainer() {
+  const messages = ["Harsh"];
+
   return (
     <div className="flex flex-col h-screen w-full bg-zinc-950">
       {/* Header */}
@@ -11,7 +14,13 @@ export function ChatContainer() {
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto w-full">
         <div className="w-full max-w-5xl mx-auto">
-          <EmptyState />
+          {messages.length > 0 ? (
+            <div className="divide-y divide-zinc-800/50">
+              <ChatMessage />
+            </div>
+          ) : (
+            <EmptyState />
+          )}
         </div>
       </div>
 
