@@ -1,7 +1,7 @@
 import { HumanMessage } from "@langchain/core/messages";
 import { app } from "./workflow.ts";
 
-export const runWorkflow = async (question: string) => {
+export const runWorkflow = async (question: string, thread_id: string) => {
   try {
     const streams = await app.stream(
       {
@@ -11,7 +11,7 @@ export const runWorkflow = async (question: string) => {
         streamMode: ["messages"],
         configurable: {
           // TODO: -> will Genrate from frontend
-          thread_id: "1",
+          thread_id,
         },
       },
     );

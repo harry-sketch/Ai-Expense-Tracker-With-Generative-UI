@@ -1,4 +1,6 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { useState } from "react";
+import type { TStreamMessageType } from "../types";
 import { ChatInput } from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import EmptyState from "./EmptyState";
@@ -6,10 +8,24 @@ import Header from "./Header";
 
 const URL = import.meta.env.VITE_API_URL;
 
+const thread_id =
+  Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+
 export function ChatContainer() {
-  const messages = ["Harsh"];
+  const [messages, setMessages] = useState<TStreamMessageType[]>([]);
 
   const handleSubmit = async (question: string) => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        type: "user",
+        payload: {
+          text: question,
+        },
+      },
+    ]);
+
     await fetchEventSource(`${URL}/chat`, {
       method: "POST",
       headers: {
@@ -17,9 +33,11 @@ export function ChatContainer() {
       },
       body: JSON.stringify({
         question,
+        thread_id,
       }),
       onmessage: (ev) => {
-        console.log(ev.data);
+        const parsedData = JSON.parse(ev.data) as TStreamMessageType;
+        setMessages((prev) => [...prev, parsedData]);
       },
     });
   };
@@ -34,7 +52,9 @@ export function ChatContainer() {
         <div className="w-full max-w-5xl mx-auto">
           {messages.length > 0 ? (
             <div className="divide-y divide-zinc-800/50">
-              <ChatMessage />
+              {messages.map((msg) => (
+                <ChatMessage key={msg.id} message={msg} />
+              ))}
             </div>
           ) : (
             <EmptyState />
