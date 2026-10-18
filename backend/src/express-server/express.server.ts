@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import { runWorkflow } from "../graph/run.workflow.ts";
 
 export const createExpressServer = () => {
   const app = express();
@@ -12,7 +13,7 @@ export const createExpressServer = () => {
     });
   });
 
-  app.post("/chat", (req, res) => {
+  app.post("/chat", async (req, res) => {
     const { question } = req.body;
 
     if (!question) {
@@ -21,16 +22,27 @@ export const createExpressServer = () => {
       });
     }
 
-    console.log({ question });
-
     res.writeHead(200, {
       "content-type": "text/event-stream",
+      "cache-control": "no-cache",
+      connection: "keep-alive",
     });
 
-    setInterval(() => {
-      res.write("event: Harsh\n");
-      res.write(`data: ${question}\n\n`);
-    }, 1000);
+    const streams = await runWorkflow(question);
+
+    if (streams) {
+      for await (const [eventType, chunk] of streams) {
+        const message = {
+          type: "ai",
+          payload: chunk[0].content ?? "",
+        };
+
+        res.write(`Event: ${eventType}\n`);
+        res.write(`data: ${JSON.stringify(message)}\n\n`);
+      }
+    }
+
+    res.end();
   });
 
   return app;
