@@ -1,33 +1,28 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { useEffect } from "react";
 import { ChatInput } from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import EmptyState from "./EmptyState";
 import Header from "./Header";
 
+const URL = import.meta.env.VITE_API_URL;
+
 export function ChatContainer() {
   const messages = ["Harsh"];
 
-  useEffect(() => {
-    const submitQuery = async () => {
-      await fetchEventSource("http://localhost:6969/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          question: "Hello",
-        }),
-        onmessage(ev) {
-          console.log(ev.data);
-        },
-      });
-    };
-
-    submitQuery();
-  }, []);
-
-  const handleSubmit = () => {};
+  const handleSubmit = async (question: string) => {
+    await fetchEventSource(`${URL}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question,
+      }),
+      onmessage: (ev) => {
+        console.log(ev.data);
+      },
+    });
+  };
 
   return (
     <div className="flex flex-col h-screen w-full bg-zinc-950">
