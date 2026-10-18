@@ -1,3 +1,5 @@
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { useEffect } from "react";
 import { ChatInput } from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import EmptyState from "./EmptyState";
@@ -5,6 +7,27 @@ import Header from "./Header";
 
 export function ChatContainer() {
   const messages = ["Harsh"];
+
+  useEffect(() => {
+    const submitQuery = async () => {
+      await fetchEventSource("http://localhost:6969/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question: "Hello",
+        }),
+        onmessage(ev) {
+          console.log(ev.data);
+        },
+      });
+    };
+
+    submitQuery();
+  }, []);
+
+  const handleSubmit = () => {};
 
   return (
     <div className="flex flex-col h-screen w-full bg-zinc-950">
@@ -26,7 +49,7 @@ export function ChatContainer() {
 
       {/* Input Area */}
       <div className="shrink-0 w-full">
-        <ChatInput />
+        <ChatInput handleSubmit={handleSubmit} />
       </div>
     </div>
   );
