@@ -1,4 +1,4 @@
-import { Ghost, User } from "lucide-react";
+import { Ghost, User, Wrench } from "lucide-react";
 import type { TStreamMessageType } from "../types";
 
 interface Props {
@@ -39,7 +39,26 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
   }
 
   if (type === "toolCall:Start") {
-    return <div>Tools call</div>;
+    return (
+      <div className="flex gap-4 py-4 px-6">
+        <div className="shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-teal-400 flex items-center justify-center">
+            <Wrench color="green" />
+          </div>
+        </div>
+        <div className="flex-1 space-y-2">
+          <div className="text-sm text-zinc-400 italic">
+            Using tool:{" "}
+            <span className="text-teal-400 font-medium">
+              {message.payload.name}
+            </span>
+          </div>
+          <div className="text-xs text-zinc-300 bg-teal-900/15 rounded-lg p-3 font-mono whitespace-pre-wrap">
+            {JSON.stringify(message.payload.args, null, 2)}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return null;

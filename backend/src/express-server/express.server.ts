@@ -35,27 +35,20 @@ export const createExpressServer = () => {
       for await (const [eventType, chunk] of streams) {
         let message: TStreamMessageType = {} as TStreamMessageType;
 
-        const payloadType = chunk[0].type;
+        if (eventType === "custom") {
+          message = chunk;
+        } else if (eventType === "messages") {
+          const payloadType = chunk[0].type;
 
-        if (payloadType === "ai") {
-          message = {
-            type: "ai",
-            payload: {
-              text: (chunk[0].content ?? "") as string,
-            },
-          };
-        }
-
-        if (payloadType === "tool") {
-          message = {
-            type: "tool",
-            payload: {
-              name: "",
-              result: {
-                "": "",
+          if (payloadType === "ai") {
+            if (chunk[0].content === "") continue;
+            message = {
+              type: "ai",
+              payload: {
+                text: (chunk[0].content ?? "") as string,
               },
-            },
-          };
+            };
+          }
         }
 
         res.write(`Event: ${eventType}\n`);

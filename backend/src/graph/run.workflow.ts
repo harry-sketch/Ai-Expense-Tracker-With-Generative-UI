@@ -8,9 +8,8 @@ export const runWorkflow = async (question: string, thread_id: string) => {
         messages: new HumanMessage(question),
       },
       {
-        streamMode: ["messages"],
+        streamMode: ["messages", "custom"],
         configurable: {
-          // TODO: -> will Genrate from frontend
           thread_id,
         },
       },

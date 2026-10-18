@@ -1,14 +1,29 @@
 import type { AIMessage, ToolMessage } from "@langchain/core/messages";
-import type { TStateType } from "../types/index.ts";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import type { TStateType, TStreamMessageType } from "../types/index.ts";
 
-export const shouldContinue = (state: TStateType) => {
+export const shouldContinue = (
+  state: TStateType,
+  config: LangGraphRunnableConfig,
+) => {
   const aiMsg = state.messages.at(-1) as AIMessage;
 
-  if (aiMsg && (aiMsg.tool_calls ?? [])?.length > 0) {
-    return "tool_node";
+  const toolCall = aiMsg?.tool_calls?.[0];
+
+  if (!toolCall) {
+    return "end";
   }
 
-  return "end";
+  const toolCallingMsg: TStreamMessageType = {
+    type: "toolCall:Start",
+    payload: {
+      name: toolCall.name,
+      args: toolCall.args,
+    },
+  };
+
+  config.writer?.(toolCallingMsg);
+  return "tool_node";
 };
 
 export const shouldCotinuefromToolNode = (state: TStateType) => {

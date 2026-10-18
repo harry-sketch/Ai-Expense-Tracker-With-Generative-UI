@@ -64,6 +64,15 @@ export function ChatContainer() {
               ];
             }
           });
+        } else if (parsedData.type === "toolCall:Start") {
+          return setMessages((prev) => [
+            ...prev,
+            {
+              id: crypto.randomUUID(),
+              type: "toolCall:Start",
+              payload: parsedData.payload,
+            },
+          ]);
         }
       },
     });
