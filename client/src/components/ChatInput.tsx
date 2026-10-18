@@ -1,5 +1,5 @@
+import { Forward } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { icons } from "../assets/icons";
 
 interface Props {
   handleSubmit: (question: string) => void;
@@ -60,10 +60,10 @@ export function ChatInput({ handleSubmit }: Props) {
             />
             <button
               type="submit"
-              disabled={false}
-              className="shrink-0 m-2.5 p-3.5 rounded-2xl bg-linear-to-br from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-xl hover:shadow-purple-500/50 disabled:hover:shadow-none hover:scale-105 active:scale-95"
+              disabled={!question}
+              className="shrink-0 m-2.5 p-3 rounded-2xl bg-teal-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-xl hover:shadow-teal-500/50 disabled:hover:shadow-none hover:scale-105 active:scale-95 text-emerald-950 cursor-pointer"
             >
-              {icons.send}
+              <Forward />
             </button>
           </div>
         </form>

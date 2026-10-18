@@ -1,21 +1,48 @@
-import { User } from "lucide-react";
+import { Ghost, User } from "lucide-react";
+import type { TStreamMessageType } from "../types";
 
-const ChatMessage = () => {
-  return (
-    <div className="flex gap-4 py-6 px-6 transition-colors">
-      <div className="shrink-0">
-        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-white-500 via-white-500 to-gray-500 flex items-center justify-center shadow-lg">
-          <User color="white" />
+interface Props {
+  message: TStreamMessageType;
+}
+
+const ChatMessage: React.FC<Props> = ({ message }) => {
+  const { payload, type } = message;
+
+  if (type === "user") {
+    return (
+      <div className="flex justify-end items-end gap-3 px-6 py-4">
+        <div className="p-2 shrink-0 rounded-full bg-zinc-200 border border-zinc-200 flex items-center justify-center">
+          <User className="w-6 h-6 text-blue-800" />
+        </div>
+        <div className="max-w-[80%] rounded-2xl rounded-bl-md bg-zinc-800 px-4 py-2.5 text-zinc-100 whitespace-pre-wrap wrap-break-word leading-7">
+          {payload.text}
         </div>
       </div>
-      <div className="flex-1 space-y-2 overflow-hidden">
-        <div className="text-sm font-medium text-zinc-300">User</div>
-        <div className="text-zinc-100 whitespace-pre-wrap wrap-break-word leading-7">
-          Hello How are you ?
+    );
+  }
+
+  if (type === "ai") {
+    return (
+      <div className="flex justify-start items-end gap-3 px-6 py-4">
+        <div className="p-2 shrink-0 rounded-full bg-zinc-200 border border-zinc-200 flex items-center justify-center">
+          <Ghost className="w-6 h-6 text-emerald-800" />
+        </div>
+        <div className="max-w-[80%] rounded-2xl rounded-bl-md bg-zinc-800 px-4 py-2.5 text-zinc-100 whitespace-pre-wrap wrap-break-word leading-7">
+          {payload.text}
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (type === "tool") {
+    return <div>tools</div>;
+  }
+
+  if (type === "toolCall:Start") {
+    return <div>Tools call</div>;
+  }
+
+  return null;
 };
 
 export default ChatMessage;
