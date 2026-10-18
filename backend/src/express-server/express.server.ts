@@ -49,6 +49,16 @@ export const createExpressServer = () => {
               },
             };
           }
+
+          if (payloadType === "tool") {
+            message = {
+              type: "tool",
+              payload: {
+                name: chunk[0].name ?? "",
+                result: JSON.parse(chunk[0].content as string),
+              },
+            };
+          }
         }
 
         res.write(`Event: ${eventType}\n`);

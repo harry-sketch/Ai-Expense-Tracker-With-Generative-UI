@@ -73,6 +73,15 @@ export function ChatContainer() {
               payload: parsedData.payload,
             },
           ]);
+        } else if (parsedData.type === "tool") {
+          return setMessages((prev) => [
+            ...prev,
+            {
+              id: crypto.randomUUID(),
+              type: "tool",
+              payload: parsedData.payload,
+            },
+          ]);
         }
       },
     });
