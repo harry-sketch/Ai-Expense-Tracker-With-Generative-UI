@@ -33,25 +33,22 @@ export const createExpressServer = () => {
 
     if (streams) {
       for await (const [eventType, chunk] of streams) {
-        let message: TStreamMessageType = {} as TStreamMessageType;
-
+        let messages: TStreamMessageType = {} as TStreamMessageType;
         if (eventType === "custom") {
-          message = chunk;
+          messages = chunk;
         } else if (eventType === "messages") {
-          const payloadType = chunk[0].type;
+          const chunkType = chunk[0].type;
 
-          if (payloadType === "ai") {
+          if (chunkType === "ai") {
             if (chunk[0].content === "") continue;
-            message = {
+            messages = {
               type: "ai",
               payload: {
-                text: (chunk[0].content ?? "") as string,
+                text: chunk[0].content as string,
               },
             };
-          }
-
-          if (payloadType === "tool") {
-            message = {
+          } else if (chunkType === "tool") {
+            messages = {
               type: "tool",
               payload: {
                 name: chunk[0].name ?? "",
@@ -61,8 +58,8 @@ export const createExpressServer = () => {
           }
         }
 
-        res.write(`Event: ${eventType}\n`);
-        res.write(`data: ${JSON.stringify(message)}\n\n`);
+        res.write(`event: ${eventType}\n`);
+        res.write(`data: ${JSON.stringify(messages)} \n\n`);
       }
     }
 

@@ -35,27 +35,28 @@ export function ChatContainer() {
         question,
         thread_id,
       }),
+
       onmessage: (ev) => {
         const parsedData = JSON.parse(ev.data) as TStreamMessageType;
 
         if (parsedData.type === "ai") {
-          setMessages((prev) => {
-            const lastMsg = prev.at(-1);
+          setMessages((prevMessages) => {
+            const lastMessage = prevMessages.at(-1);
 
-            if (lastMsg && lastMsg.type === "ai") {
-              const clonedMsg = [...prev];
+            if (lastMessage && lastMessage.type === "ai") {
+              const allMsgs = [...prevMessages];
 
-              clonedMsg[clonedMsg.length - 1] = {
-                ...lastMsg,
+              allMsgs[allMsgs.length - 1] = {
+                ...lastMessage,
                 payload: {
-                  text: lastMsg.payload.text + parsedData.payload.text,
+                  text: parsedData.payload.text,
                 },
               };
 
-              return clonedMsg;
+              return allMsgs;
             } else {
               return [
-                ...prev,
+                ...prevMessages,
                 {
                   id: crypto.randomUUID(),
                   type: "ai",
@@ -64,21 +65,21 @@ export function ChatContainer() {
               ];
             }
           });
-        } else if (parsedData.type === "toolCall:Start") {
-          return setMessages((prev) => [
-            ...prev,
-            {
-              id: crypto.randomUUID(),
-              type: "toolCall:Start",
-              payload: parsedData.payload,
-            },
-          ]);
         } else if (parsedData.type === "tool") {
           return setMessages((prev) => [
             ...prev,
             {
               id: crypto.randomUUID(),
               type: "tool",
+              payload: parsedData.payload,
+            },
+          ]);
+        } else if (parsedData.type === "toolCall:Start") {
+          return setMessages((prev) => [
+            ...prev,
+            {
+              id: crypto.randomUUID(),
+              type: "toolCall:Start",
               payload: parsedData.payload,
             },
           ]);
