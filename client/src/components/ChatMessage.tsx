@@ -1,5 +1,6 @@
 import { Check, Ghost, User, Wrench } from "lucide-react";
-import type { TStreamMessageType } from "../types";
+import type { IChartConfig, TStreamMessageType } from "../types";
+import { ExpenseChart } from "./ExpenseChart";
 
 interface Props {
   message: TStreamMessageType;
@@ -52,13 +53,13 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
           <div className="text-xs text-zinc-300 bg-teal-900/20 rounded-xl p-3 font-mono whitespace-pre-wrap">
             {JSON.stringify(message.payload.result, null, 2)}
           </div>
-          {/* 
+
           {message.payload.name === "generate_expense_chart" && (
             <ExpenseChart
-              chartData={message.payload.result.data}
-              labelKey={message.payload.result.labelKey}
+              labelKey={payload.result.labelKey}
+              chartData={payload.result.result as IChartConfig[]}
             />
-          )} */}
+          )}
         </div>
       </div>
     );

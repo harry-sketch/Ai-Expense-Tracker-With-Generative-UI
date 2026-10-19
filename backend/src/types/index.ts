@@ -8,13 +8,13 @@ export type TStreamMessageType =
       type: "tool";
       payload: {
         name: string;
-        result: Record<string, string>;
+        result: Record<string, any>;
       };
     }
   | {
       type: "toolCall:Start";
       payload: {
         name: string;
-        args: Record<string, string>;
+        args: Record<string, any>;
       };
     };

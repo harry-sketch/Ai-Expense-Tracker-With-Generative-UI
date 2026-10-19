@@ -4,6 +4,11 @@ export interface IMessages {
   content: string;
 }
 
+export interface IChartConfig {
+  date: string;
+  totalAmt: number;
+}
+
 export type TStreamMessageType =
   | { id: string; type: "user"; payload: { text: string } }
   | { id: string; type: "ai"; payload: { text: string } }
@@ -12,7 +17,7 @@ export type TStreamMessageType =
       type: "tool";
       payload: {
         name: string;
-        result: Record<string, string>;
+        result: Record<string, any>;
       };
     }
   | {
@@ -20,6 +25,6 @@ export type TStreamMessageType =
       type: "toolCall:Start";
       payload: {
         name: string;
-        args: Record<string, string>;
+        args: Record<string, any>;
       };
     };
