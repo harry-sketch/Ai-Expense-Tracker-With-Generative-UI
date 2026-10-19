@@ -1,5 +1,5 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TStreamMessageType } from "../types";
 import { ChatInput } from "./ChatInput";
 import ChatMessage from "./ChatMessage";
@@ -12,7 +12,15 @@ const thread_id =
   Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
 
 export function ChatContainer() {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<TStreamMessageType[]>([]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
 
   const handleSubmit = async (question: string) => {
     setMessages((prev) => [
@@ -49,7 +57,7 @@ export function ChatContainer() {
               allMsgs[allMsgs.length - 1] = {
                 ...lastMessage,
                 payload: {
-                  text: parsedData.payload.text,
+                  text: lastMessage.payload.text + parsedData.payload.text,
                 },
               };
 
@@ -94,13 +102,14 @@ export function ChatContainer() {
       <Header />
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto w-full">
+      <div className="flex-1 overflow-y-auto w-ful">
         <div className="w-full max-w-5xl mx-auto">
           {messages.length > 0 ? (
             <div>
               {messages.map((msg) => (
                 <ChatMessage key={msg.id} message={msg} />
               ))}
+              <div ref={scrollRef} />
             </div>
           ) : (
             <EmptyState />
