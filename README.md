@@ -151,15 +151,6 @@ This project explores several practical concepts in AI application development:
 - Combining conversational interfaces with Generative UI.
 - Separating frontend, backend, agent workflow, and data responsibilities.
 
-## 🔮 Future Improvements
-
-Potential areas to explore next:
-
-- Add more interactive UI components for expense summaries and spending breakdowns.
-- Improve the agent's ability to handle multi-step requests.
-- Add clearer loading, error, and streaming states to the chat interface.
-- Expand expense analytics and visual reporting.
-- Add tests for agent workflows and database tools.
 
 ## 📌 About the Project
 
