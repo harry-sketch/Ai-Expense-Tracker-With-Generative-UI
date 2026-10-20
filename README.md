@@ -6,6 +6,10 @@ Instead of relying only on traditional forms and dashboards, you can interact wi
 
 This project explores how custom AI agents can go beyond answering questions and interact with real application data.
 
+## 📸 Project Preview
+
+![AI Expense Tracker with Generative UI](https://github.com/user-attachments/assets/5e452b1a-cf57-44b1-b45d-cdafc3fbe64b)
+
 ## ✨ Features
 
 - **AI-Powered Expense Management** — interact with your expenses using natural language.
@@ -150,7 +154,6 @@ This project explores several practical concepts in AI application development:
 - Streaming AI-generated responses to a frontend.
 - Combining conversational interfaces with Generative UI.
 - Separating frontend, backend, agent workflow, and data responsibilities.
-
 
 ## 📌 About the Project
 
